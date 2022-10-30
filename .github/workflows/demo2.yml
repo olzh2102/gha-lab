@@ -31,17 +31,23 @@ jobs:
         run: npm ci
       - name: 👷‍♂️ Build project
         run: npm run build
-      - name: Upload artifacts
+      - name: 🔼 Upload artifacts
         uses: actions/upload-artifact@v3
         with:
           name: dist-files
-          path: |
-            dist
-            package.json
+          path: dist
+            # dist
+            # package.json
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: 🔽 Get build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: dist-files
+      - name: 🔍 See contents
+        run: ls
       - name: 🚀 Deploy
         run: echo "Deploying ..."
