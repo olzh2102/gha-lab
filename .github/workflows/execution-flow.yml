@@ -4,7 +4,7 @@ on:
     branches:
       - main
 jobs:
-  📝 lint:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - name: Get code
@@ -19,7 +19,7 @@ jobs:
         run: npm ci
       - name: Lint code
         run: npm run lint
-  🚦 test:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Get code
@@ -41,7 +41,7 @@ jobs:
         with:
           name: test-report
           path: test.json
-  👷‍♂️ build:
+  build:
     needs: test
     runs-on: ubuntu-latest
     steps:
@@ -63,7 +63,7 @@ jobs:
         with:
           name: dist-files
           path: dist
-  🚀 deploy:
+  deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -76,7 +76,8 @@ jobs:
       - name: Deploy
         run: echo "Deploying..."
 
-  🧾 report:
+  report:
+    needs: [lint, deploy]
     if: failure()
     runs-on: ubuntu-latest
     steps:
