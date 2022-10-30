@@ -1,2 +1,0 @@
-# gha-lab
-Experiment, playground
