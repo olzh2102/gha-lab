@@ -1,47 +1,45 @@
-name: Check code
-on: workflow_dispatch
+name: Deployment
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+env:
+  MONGODB_DB_NAME: gha-demo
+
 jobs:
   test:
+    env:
+      MONGODB_CLUSTER_ADDRESS: cluster0.nnelrdw.mongodb.net
+      MONGODB_USERNAME: olzhas2102
+      MONGODB_PASSWORD: ylrtkOz3zWATISK7
+      PORT: 8080
+
+    environment: testing
     runs-on: ubuntu-latest
     steps:
-      - name: ⬇️ Get code
+      - name: ⬇️ Get Code
         uses: actions/checkout@v3
-      - name: 💿 Install NodeJS
-        uses: actions/setup-node@v3
+      - name: 🗃 Cache dependencies
+        uses: actions/cache@v3
         with:
-          node-version: 18
+          path: ~/.npm
+          key: npm-deps-${{ hashFiles('**/package-lock.json') }}
       - name: 🛠 Install dependencies
         run: npm ci
+      - name: 🏃‍♂️ Run server
+        run: npm start & npx wait-on http://127.0.0.1:$PORT
       - name: 🚦 Run tests
         run: npm test
-
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: ⬇️ Get code
-        uses: actions/checkout@v3
-      - name: 💿 Install NodeJS
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - name: 🛠 Install dependencies
-        run: npm ci
-      - name: 🚦 Lint
-        run: npm run lint
+      - name: 📺 Output information
+        run: echo "MONGODB_USERNAME: ${{ env.MONGODB_USERNAME }}"
 
   deploy:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - name: ⬇️ Get code
-        uses: actions/checkout@v3
-      - name: 💿 Install NodeJS
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - name: 🛠 Install dependencies
-        run: npm ci
-      - name: 👷‍♂️ Build project
-        run: npm run build
-      - name: 🚀 Deploy
-        run: echo "Deploying..." 
+      - name: 📺 Output information
+        run: |        
+          echo "MONGODB_USERNAME: ${{ env.MONGODB_USERNAME }}"
+          echo "MONGODB_DB_NAME: ${{ env.MONGODB_DB_NAME }}"
