@@ -18,6 +18,8 @@ jobs:
 
     environment: testing
     runs-on: ubuntu-latest
+    container:
+      image: node:16
     steps:
       - name: ⬇️ Get Code
         uses: actions/checkout@v3
