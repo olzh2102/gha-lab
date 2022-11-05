@@ -1,70 +1,71 @@
-# name: Deploy app
-# on:
-#   push:
-#     branches:
-#       - main
-#       - master
-# jobs:
-#   test:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: ⬇️ Get code
-#         uses: actions/checkout@v3
-#       - name: 🗃 Cache dependencies
-#         uses: actions/cache@v3
-#         with:
-#           path: ~/.npm
-#           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
-#       - name: 💿 Install NodeJS
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: 18
-#       - name: 🛠 Install dependencies
-#         run: npm ci
-#       - name: 🚦 Lint
-#         run: npm run lint
-#       - name: 🚦 Run tests
-#         run: npm test
+name: Deploy app
+on:
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - main
+  #     - master
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Get code
+        uses: actions/checkout@v3
+      - name: 🗃 Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+      - name: 💿 Install NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: 🛠 Install dependencies
+        run: npm ci
+      - name: 🚦 Lint
+        run: npm run lint
+      - name: 🚦 Run tests
+        run: npm test
 
-#   build:
-#     needs: test
-#     runs-on: ubuntu-latest
-#     outputs:
-#       script-file: ${{ steps.publish.outputs.script-file }}
-#     steps:
-#       - name: ⬇️ Get code
-#         uses: actions/checkout@v3
-#       - name: 🗃 Cache dependencies
-#         uses: actions/cache@v3
-#         with:
-#           path: ~/.npm
-#           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
-#       - name: 🛠 Install dependencies
-#         run: npm ci
-#       - name: 👷‍♂️ Build project
-#         run: npm run build
-#       - name: 📰 Publish JS filename
-#         id: publish
-#         run: find dist/assets/*.js -type f -execdir echo 'name=script-file={}' ';' >> $GITHUB_OUTPUT
-#       - name: 🔼 Upload artifacts
-#         uses: actions/upload-artifact@v3
-#         with:
-#           name: dist-files
-#           path: dist
-#             # dist
-#             # package.json
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    outputs:
+      script-file: ${{ steps.publish.outputs.script-file }}
+    steps:
+      - name: ⬇️ Get code
+        uses: actions/checkout@v3
+      - name: 🗃 Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+      - name: 🛠 Install dependencies
+        run: npm ci
+      - name: 👷‍♂️ Build project
+        run: npm run build
+      - name: 📰 Publish JS filename
+        id: publish
+        run: find dist/assets/*.js -type f -execdir echo 'name=script-file={}' ';' >> $GITHUB_OUTPUT
+      - name: 🔼 Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-files
+          path: dist
+            # dist
+            # package.json
 
-#   deploy:
-#     needs: build
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: 🔽 Get build artifacts
-#         uses: actions/download-artifact@v3
-#         with:
-#           name: dist-files
-#       - name: 🔍 See contents
-#         run: ls
-#       - name: 👓 Read filename from another job
-#         run: echo "${{ needs.build.outputs.script-file }}"
-#       - name: 🚀 Deploy
-#         run: echo "Deploying ..."
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔽 Get build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: dist-files
+      - name: 🔍 See contents
+        run: ls
+      - name: 👓 Read filename from another job
+        run: echo "${{ needs.build.outputs.script-file }}"
+      - name: 🚀 Deploy
+        run: echo "Deploying ..."

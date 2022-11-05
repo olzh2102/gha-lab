@@ -63,11 +63,10 @@ jobs:
       - name: 📰 Output contents
         run: ls
       - name: Deploy site
-        run: echo "Deploying..."
-  information:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get code
-        uses: actions/checkout@v3
-      - name: Run custom action
-        uses: ./.github/actions/deploy-s3-js
+        uses: './.github/actions/deploy-s3-js'
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_ID: ${{ secrets.AWS_SECRET_ACCESS_ID }}
+        with:
+          bucket: gha-custom-action-hosting
+          dist-folder: ./dist
