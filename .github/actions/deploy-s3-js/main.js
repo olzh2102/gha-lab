@@ -14,6 +14,9 @@ function run() {
     // * sync local folder files into s3 bucket folder
     exec.exec(`aws s3 sync ${distFolder} ${s3Uri} --region ${bucketRegion}`)
 
+    const websiteUrl = `http://${bucket}.s3-website-${bucketRegion}.amazonaws.com`
+    core.setOutput('website-url', websiteUrl)
+
     core.notice('Hello from my custom JS action!')
 }
 
