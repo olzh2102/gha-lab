@@ -7,7 +7,7 @@ jobs:
   assign-label:
     runs-on: ubuntu-latest
     steps:
-      - name: Assign label
+      - name: Assign label 
         env:
           TITLE: ${{ github.event.issue.title }}
         run: |
