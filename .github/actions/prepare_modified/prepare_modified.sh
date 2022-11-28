@@ -25,12 +25,17 @@ then
 else
     modified_modules="[]"
     jq -c .[] <<< $CONFIG | while read module; do
-        path=$(jq -c '.path' <<<$module)
+        path=$(jq -c '.path' <<< $module)
         num=$(git diff --name-only HEAD^ HEAD -- "$path" | wc -l)
-        newValue=$(jq -c --argjson c "$module" '. += [$c]' <<<$modified_modules)
-        modified_modules=$newValue
-        echo $newValue
-        echo "modified_modules=$newValue" >>$GITHUB_OUTPUT
+        if [ $num -gt 0 ];
+        then
+            newValue=$(jq -c --argjson c "$module" '. += [$c]' <<< $modified_modules)
+            modified_modules=$newValue
+            echo $newValue
+            echo "modified_modules=$newValue" >> $GITHUB_OUTPUT
+        else
+            echo "modified_modules=[]" >> $GITHUB_OUTPUT
+        fi
 done
 fi
 
