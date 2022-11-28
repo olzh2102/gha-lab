@@ -3,7 +3,7 @@ set -Eeuo pipefail
 
 function modified() {
     count=0
-    IFS=',' read -r -a paths <<< "$1"
+    IFS=', ' read -r -a paths <<< "$1"
 
     for path in ${paths[@]}; do
         num=$(git diff --name-only HEAD^ HEAD -- "$path" | wc -l)
