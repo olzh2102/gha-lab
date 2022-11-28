@@ -3,5 +3,15 @@
         "name": "Module Http",
         "module": "module-http",
         "path": "module-http/**"
+    },
+    {
+        "name": "Module KZ",
+        "module": "module-kz",
+        "path": "module-kz/**"
+    },
+    {
+        "name": "Module Benthos",
+        "module": "module-benthos",
+        "path": "module-benthos/**"
     }
 ]
