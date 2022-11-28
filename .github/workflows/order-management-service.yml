@@ -1,0 +1,28 @@
+name: Master - CI/CD
+on:
+  push:
+    branches:
+      - main
+      - 'playground/workflow-for-omg-service'
+jobs:
+  prepare_modified_files:
+    name: 🗃 Modified modules
+    runs-on: [ self-hosted, default ]
+    steps:
+      - name: 🚪 Checkout source code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: 📖 Read config file
+        id: config
+        run: echo "config=$(jq -c . ./.github/config/modules.json)" >> $GITHUB_OUTPUT
+
+      - name: 👀 Get modified modules
+        id: check_modified
+        uses: ./.github/actions/prepare_modified
+        with:
+          config: ${{ steps.config.outputs.config }}
+          terraform_path: 'terraform/**'
+          db_migration_path: 'db-migration/**'
+          common_paths: "src/**, public/**"

@@ -1,0 +1,32 @@
+name: "Prepare modified modules"
+description: "Collects modified modules into collection"
+inputs:
+    config:
+      description: "The modules"
+      required: true
+    terraform_path:
+      description: "Path to terraform files"
+      required: true
+    db_migration_path:
+      description: "Path to DB Migration files"
+      required: true
+    common_paths:
+      description: "Paths of common files, modules"
+      required: true
+outputs:
+  modified_modules:
+    description: "List of modified modules"
+    value: ${{ steps.modified.outputs.modified_modules }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: 👀 Check modified modules
+      id: modified
+      shell: bash
+      env:
+        TERRAFORM_PATH: ${{ inputs.terraform_path }}
+        DB_MIGRATION_PATH: ${{ inputs.db_migration_path }}
+        COMMON_PATHS: ${{ inputs.common_paths }}
+        CONFIG: ${{ inputs.config }}
+      run: ./.github/actions/prepare_modified/prepare_modified.sh

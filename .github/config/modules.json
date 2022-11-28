@@ -1,0 +1,7 @@
+[
+    {
+        "name": "Order Management Http",
+        "module": "order-management-http",
+        "path": "order-management-http/**"
+    }
+]
