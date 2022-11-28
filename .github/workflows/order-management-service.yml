@@ -36,7 +36,7 @@ jobs:
     name: ⚙️ Apply terraform changes
     needs: prepare_modified_files
     runs-on: ubuntu-latest
-    if: ${{ needs.prepare_modified_files.outputs.is_terraform_changed == 'true' }}
+    if: needs.prepare_modified_files.outputs.is_terraform_changed == 'true'
     steps:
       - run: echo "I am running cause terraform was changed"
 
@@ -44,7 +44,7 @@ jobs:
     name: 💾 Apply DB Migration
     needs: prepare_modified_files
     runs-on: ubuntu-latest
-    if: ${{ needs.prepare_modified_files.outputs.is_db_migration_changed == 'true' }}
+    if: needs.prepare_modified_files.outputs.is_db_migration_changed == 'true'
     steps:
       - run: echo "I am running cause DB Migration was changed"
     
