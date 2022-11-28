@@ -19,3 +19,4 @@ IS_DB_MIGRATION_CHANGED_VAR=$(modified "$DB_MIGRATION_PATH")
 
 if [ $IS_COMMON_CHANGED_VAR -gt 0 ]; then
     echo "Common changed"
+fi
