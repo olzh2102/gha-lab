@@ -29,8 +29,8 @@ jobs:
     
     outputs:
       modules: ${{ steps.check_modified.outputs.modified_modules }}
-      is_terraform_changed: ${{ steps.check_modified.outputs.terraform == 'true' }}
-      is_db_migration_changed: ${{ steps.check_modified.outputs.db_migration == 'true' }}
+      is_terraform_changed: ${{ steps.check_modified.outputs.terraform }}
+      is_db_migration_changed: ${{ steps.check_modified.outputs.db_migration }}
 
   terraform_apply:
     name: ⚙️ Apply terraform changes
@@ -50,8 +50,9 @@ jobs:
     
   modules:
     name: Deploy modules ${{ matrix.modules.name }}
-    runs-on: ubuntu-latest
     needs: prepare_modified_files
+    runs-on: ubuntu-latest
+    if: needs.prepare_modified_files.outputs.modules != '[]'
     strategy:
       matrix:
         modules: ${{ fromJSON(needs.prepare_modified_files.outputs.modules) }}
