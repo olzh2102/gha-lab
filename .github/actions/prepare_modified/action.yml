@@ -17,6 +17,12 @@ outputs:
   modified_modules:
     description: "List of modified modules"
     value: ${{ steps.modified.outputs.modified_modules }}
+  terraform:
+    description: "Whether Terraform files were changed"
+    value: ${{ steps.modified.outputs.terraform }}
+  db_migration:
+    description: "Whether DB Migration files were changed"
+    value: ${{ steps.modified.outputs.db_migration }}
 
 runs:
   using: "composite"
