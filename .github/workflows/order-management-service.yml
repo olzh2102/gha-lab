@@ -26,3 +26,12 @@ jobs:
           terraform_path: 'terraform/**'
           db_migration_path: 'db-migration/**'
           common_paths: "src/**, public/**"
+    
+    outputs:
+      modules: ${{ steps.check_modified.outputs.modified_modules }}
+      is_terraform_changed: ${{ steps.check_modified.outputs.terraform == 'true' }}
+      is_db_migration_changed: ${{ steps.check_modified.outputs.db_migration == 'true' }}
+
+        
+
+    

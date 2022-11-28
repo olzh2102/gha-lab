@@ -1,7 +1,7 @@
 [
     {
-        "name": "Order Management Http",
-        "module": "order-management-http",
-        "path": "order-management-http/**"
+        "name": "Module Http",
+        "module": "module-http",
+        "path": "module-http/**"
     }
 ]
