@@ -7,7 +7,7 @@ on:
 jobs:
   prepare_modified_files:
     name: 🗃 Modified modules
-    runs-on: [ self-hosted, default ]
+    runs-on: ubuntu-latest
     steps:
       - name: 🚪 Checkout source code
         uses: actions/checkout@v3
